@@ -1,0 +1,22 @@
+{
+  "name": "nightlify",
+  "version": "1.0.0",
+  "description": "A nightmode image converter",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Justin Licari",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^27.0.6",
+    "jimp": "^0.16.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.14.8",
+    "@babel/node": "^7.14.7",
+    "@babel/preset-env": "^7.14.8",
+    "nodemon": "^2.0.12"
+  }
+}

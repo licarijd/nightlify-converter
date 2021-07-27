@@ -1,17 +1,23 @@
 import Jimp from 'jimp'
 import { pipe } from './utils'
 
-const BRIGHTNESS_MULTIPLIER = -0.5
-const CONTRAST_MULTIPLIER = 0.5
+const BRIGHTNESS_MULTIPLIER = -0.25
+const CONTRAST_MULTIPLIER = 0.25
 
-const reduceBrightness = async imageUrl => {
-    const image = await Jimp.read(imageUrl)
+const reduceBrightness = image => {
+    console.log(image)
     return image.brightness(BRIGHTNESS_MULTIPLIER)
 }
 
-const increaseContrast = async imageUrl => {
-    const image = await Jimp.read(imageUrl)
+const increaseContrast = image => {
     return image.contrast(CONTRAST_MULTIPLIER)
 }
 
-export const nightmodeImage = () => [reduceBrightness, increaseContrast].reduce(pipe)
+const nightmodeImage = () => [reduceBrightness, increaseContrast].reduce(pipe)
+
+export const convertImageToNightmode = async (url, newImageUrl) => {
+    const image = await Jimp.read(url)
+    console.log(image)
+    const newImage = nightmodeImage()(image)
+    await newImage.writeAsync(newImageUrl)
+}

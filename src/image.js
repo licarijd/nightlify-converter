@@ -17,7 +17,6 @@ const nightmodeImage = () => [reduceBrightness, increaseContrast].reduce(pipe)
 
 export const convertImageToNightmode = async (url, newImageUrl) => {
     const image = await Jimp.read(url)
-    console.log(image)
     const newImage = nightmodeImage()(image)
     await newImage.writeAsync(newImageUrl)
 }

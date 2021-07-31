@@ -2,3 +2,4 @@ node_modules
 out
 worker-1-compiled.js
 rabbitMq.config.js
+awsAccessKeys.config.js

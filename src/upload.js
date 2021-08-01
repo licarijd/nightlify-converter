@@ -1,5 +1,6 @@
 import S3 from 'aws-s3';
 import AWS from 'aws-sdk'
+import { keys } from './s3AccessKeys';
 import { config } from './s3.config'
 
 const S3UploadClient = new S3(config)
@@ -7,8 +8,8 @@ const S3DownloadClient = new AWS.S3()
 S3DownloadClient.config.update({
     bucketName: 'original-uploaded-images-dev',
     region: config.region,
-    accessKeyId: config.accessKeyId,
-    secretAccessKey: config.secretAccessKey,
+    accessKeyId: keys.accessKeyId,
+    secretAccessKey: keys.secretAccessKey,
 })
 
 export const uploadToS3 = async (file, fileName) => {

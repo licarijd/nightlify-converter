@@ -5,7 +5,6 @@ const BRIGHTNESS_MULTIPLIER = -0.25
 const CONTRAST_MULTIPLIER = 0.25
 
 const reduceBrightness = image => {
-    console.log(image)
     return image.brightness(BRIGHTNESS_MULTIPLIER)
 }
 
@@ -18,5 +17,6 @@ const nightmodeImage = () => [reduceBrightness, increaseContrast].reduce(pipe)
 export const convertImageToNightmode = async (url, newImageUrl) => {
     const image = await Jimp.read(url)
     const newImage = nightmodeImage()(image)
-    await newImage.writeAsync(newImageUrl)
+    //await newImage.writeAsync(newImageUrl)
+    return newImage.getBufferAsync(Jimp.AUTO)
 }

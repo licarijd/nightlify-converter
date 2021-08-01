@@ -1,0 +1,1 @@
+export const CONVERTED_IMAGES_BUCKET = 'converted-images-dev'

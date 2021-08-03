@@ -3,3 +3,4 @@ out
 worker-1-compiled.js
 rabbitMq.config.js
 s3AccessKeys.js
+mailgun.config.js

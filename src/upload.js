@@ -3,9 +3,9 @@ import { keys } from './s3AccessKeys';
 import { config } from './s3.config'
 import { sendEmail } from './emailUtils';
 
-const S3DownloadClient = new AWS.S3()
+const S3Client = new AWS.S3()
 
-S3DownloadClient.config.update({
+S3Client.config.update({
     bucketName: 'original-uploaded-images-dev',
     region: config.region,
     accessKeyId: keys.accessKeyId,
@@ -21,7 +21,7 @@ export const uploadConvertedFileToS3 = (file, key) => {
         //ContentType: image.mimetype
       };
 
-      return S3DownloadClient.upload(params, async (err, data) => {
+      return S3Client.upload(params, async (err, data) => {
         if (err) {
             console.log(err)
             return err
@@ -38,7 +38,7 @@ export const getFileFromS3 = async (key, bucket) => {
             Key: key 
         }
     
-        const data = await S3DownloadClient.getObject(params).promise();
+        const data = await S3Client.getObject(params).promise();
     
         return data.Body
     } catch (e) {

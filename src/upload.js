@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk'
 import { keys } from './s3AccessKeys';
 import { config } from './s3.config'
+import { sendEmail } from './emailUtils';
 
 const S3DownloadClient = new AWS.S3()
 
@@ -20,12 +21,12 @@ export const uploadConvertedFileToS3 = (file, key) => {
         //ContentType: image.mimetype
       };
 
-      S3DownloadClient.upload(params, async (err, data) => {
+      return S3DownloadClient.upload(params, async (err, data) => {
         if (err) {
             console.log(err)
             return err
         }
-        console.log(data)
+        sendEmail(data.Location)
         return data
       })
 }

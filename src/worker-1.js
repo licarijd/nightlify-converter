@@ -3,7 +3,7 @@ import { host, port, username, password } from './rabbitMq.config'
 import "regenerator-runtime/runtime"
 import { convertImageToNightmode } from './image'
 import { config } from './s3.config'
-import { getFileFromS3, uploadConvertedFileToS3, uploadToS3 } from './upload'
+import { getFileFromS3, uploadConvertedFileToS3 } from './upload'
 import { CONVERTED_IMAGES_BUCKET } from './constants'
 
 /*
@@ -29,28 +29,23 @@ export const rabbitMqConfig = {
         ssl_verify: true
     }
 }
-const RABBITMQ_QUEUE = 'image-conversion-job-broker'
+const RABBITMQ_QUEUE = 'image-conversion-job-broker-1'
 const client = new RabbitMQClient(rabbitMqConfig)
 
 client.consume({ queue: { name: RABBITMQ_QUEUE } }, (message, options) => {
     const { key, bucket } = message
-    console.log(key)
-    console.log(bucket)
     const newImageUrl = `https://${CONVERTED_IMAGES_BUCKET}.s3.${config.region}.amazonaws.com/${key}`
+    
     return getFileFromS3(key, bucket)
         .then(originalImage => {
-            console.log(originalImage)
             return convertImageToNightmode(originalImage, newImageUrl)
         })
         .then(image => {
-            console.log(image)
             return uploadConvertedFileToS3(image, key)
         }).then(res => {
-            console.log(res)
             return res
         }).catch(err => {
             console.log(err)
             return err
         })
-    //return Promise.resolve(key)
 })

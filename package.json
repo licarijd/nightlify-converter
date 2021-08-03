@@ -4,12 +4,13 @@
   "description": "A nightmode image converter",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "buildConverter": "npx babel src --out-dir out",
+    "startConverter": "npm run buildConverter && node out/worker-1.js"
   },
   "author": "Justin Licari",
   "license": "ISC",
   "dependencies": {
-    "aws-s3": "^2.0.5",
     "aws-sdk": "^2.958.0",
     "jest": "^27.0.6",
     "jimp": "^0.16.1",

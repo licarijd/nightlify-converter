@@ -12,7 +12,7 @@ S3Client.config.update({
     secretAccessKey: keys.secretAccessKey,
 })
 
-export const uploadConvertedFileToS3 = (file, key) => {
+export const uploadConvertedFileToS3 = (file, key, email) => {
     const params = {
         Bucket: config.bucketName,
         Key: key,
@@ -26,7 +26,7 @@ export const uploadConvertedFileToS3 = (file, key) => {
             console.log(err)
             return err
         }
-        sendEmail(data.Location)
+        sendEmail(email, data.Location)
         return data
       })
 }

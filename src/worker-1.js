@@ -33,15 +33,16 @@ const RABBITMQ_QUEUE = 'image-conversion-job-broker-1'
 const client = new RabbitMQClient(rabbitMqConfig)
 
 client.consume({ queue: { name: RABBITMQ_QUEUE } }, (message, options) => {
-    const { key, bucket } = message
-    const newImageUrl = `https://${CONVERTED_IMAGES_BUCKET}.s3.${config.region}.amazonaws.com/${key}`
+    const { key, email, bucket } = message
+    const s3Key = `${email}-${key}`
+    const newImageUrl = `https://${CONVERTED_IMAGES_BUCKET}.s3.${config.region}.amazonaws.com/${s3Key}`
     
     return getFileFromS3(key, bucket)
         .then(originalImage => {
             return convertImageToNightmode(originalImage, newImageUrl)
         })
         .then(image => {
-            return uploadConvertedFileToS3(image, key)
+            return uploadConvertedFileToS3(image, s3Key, email)
         }).then(res => {
             return res
         }).catch(err => {

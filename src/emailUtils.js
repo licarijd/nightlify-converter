@@ -6,7 +6,7 @@ const mg = mailgun({apiKey: API_KEY, domain: DOMAIN});
 // You can send up to 300 emails/day from this sandbox server.
 // Next, you should add your own domain so you can send 10000 emails/month for free.
 
-export const sendEmail = (imagePath, to = 'nightlifyapp@gmail.com') => {
+export const sendEmail = (to, imagePath) => {
     const data = {
         from: SENDER,
         to,

@@ -2,9 +2,9 @@ import RabbitMQClient from 'node-rabbitmq-client'
 import { host, port, username, password } from './rabbitMq.config'
 import "regenerator-runtime/runtime"
 import { convertImageToNightmode } from './image'
-import { config } from './s3.config'
 import { getFileFromS3, uploadConvertedFileToS3 } from './upload'
-import { CONVERTED_IMAGES_BUCKET } from './constants'
+import { WATERMARK_IMAGE_BUCKET, WATERMARK_IMAGE_KEY } from './constants'
+import { config } from './s3.config'
 
 /*
     - options.findServers(callback) is a function which returns one or more servers to connect to. This should return either a single URL or an array of URLs. This is handy when you're using a service discovery mechanism such as Consul or etcd. Instead of taking a callback, this can also return a Promise. Note that if this is supplied, then urls is ignored.
@@ -33,13 +33,13 @@ const RABBITMQ_QUEUE = 'image-conversion-job-broker-1'
 const client = new RabbitMQClient(rabbitMqConfig)
 
 client.consume({ queue: { name: RABBITMQ_QUEUE } }, (message, options) => {
-    const { key, email, bucket } = message
+    const { key, email, bucket, watermark } = message
     const s3Key = `${email}-${key}`
-    const newImageUrl = `https://${CONVERTED_IMAGES_BUCKET}.s3.${config.region}.amazonaws.com/${s3Key}`
-    
+    const watermarkImageUrl = `https://${WATERMARK_IMAGE_BUCKET}.s3.${config.region}.amazonaws.com/${WATERMARK_IMAGE_KEY}`
+
     return getFileFromS3(key, bucket)
         .then(originalImage => {
-            return convertImageToNightmode(originalImage, newImageUrl)
+            return convertImageToNightmode(originalImage, watermark ? watermarkImageUrl : '')
         })
         .then(image => {
             return uploadConvertedFileToS3(image, s3Key, email)

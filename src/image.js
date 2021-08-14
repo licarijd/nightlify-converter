@@ -14,9 +14,19 @@ const increaseContrast = image => {
 
 const nightmodeImage = () => [reduceBrightness, increaseContrast].reduce(pipe)
 
-export const convertImageToNightmode = async (url, newImageUrl) => {
+export const convertImageToNightmode = async (url, watermark) => {
     const image = await Jimp.read(url)
-    const newImage = nightmodeImage()(image)
-    //await newImage.writeAsync(newImageUrl)
+    let newImage = nightmodeImage()(image)
+
+    if (watermark) {
+        const watermarkImage = await Jimp.read(watermark)
+        const scaledWatermarkImage = watermarkImage.scale(0.1)
+        newImage = await addWatermark(image, scaledWatermarkImage)
+    }
+
     return newImage.getBufferAsync(Jimp.AUTO)
+}
+
+export const addWatermark = async (image, watermarkImage) => {
+    return await image.composite(watermarkImage, 0, 0)
 }

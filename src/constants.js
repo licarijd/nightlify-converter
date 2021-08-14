@@ -1,4 +1,6 @@
-export const CONVERTED_IMAGES_BUCKET = 'converted-images-dev'
-export const ORIGINAL_IMAGES_BUCKET = 'original-uploaded-images-dev'
+export const DEV_CONVERTED_IMAGES_BUCKET = 'converted-images-dev'
+export const PROD_CONVERTED_IMAGES_BUCKET = 'converted-images'
+export const DEV_ORIGINAL_IMAGES_BUCKET = 'original-uploaded-images-dev'
+export const PROD_ORIGINAL_IMAGES_BUCKET = 'original-uploaded-images'
 export const WATERMARK_IMAGE_BUCKET = 'conversion-assets'
 export const WATERMARK_IMAGE_KEY = 'addtext_com_MTkxOTM1MTc1MjI.png'

@@ -2,12 +2,13 @@ import AWS from 'aws-sdk'
 import { keys } from './s3AccessKeys';
 import { config } from './s3.config'
 import { sendEmail } from './emailUtils';
-import { ORIGINAL_IMAGES_BUCKET } from './constants';
+import { DEV_ORIGINAL_IMAGES_BUCKET, PROD_ORIGINAL_IMAGES_BUCKET } from './constants';
 
 const S3Client = new AWS.S3()
+const bucketName = process.env.NODE_ENV == 'production' ? PROD_ORIGINAL_IMAGES_BUCKET : DEV_ORIGINAL_IMAGES_BUCKET
 
 S3Client.config.update({
-    bucketName: ORIGINAL_IMAGES_BUCKET,
+    bucketName,
     region: config.region,
     accessKeyId: keys.accessKeyId,
     secretAccessKey: keys.secretAccessKey,
